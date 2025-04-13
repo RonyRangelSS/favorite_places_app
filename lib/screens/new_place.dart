@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:favorite_places_app/models/place.dart';
 import 'package:favorite_places_app/providers/places_provider.dart';
 import 'package:favorite_places_app/widgets/image_input.dart';
+import 'package:favorite_places_app/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,15 +20,28 @@ class NewPlace extends ConsumerStatefulWidget {
 class _NewPlaceState extends ConsumerState<NewPlace> {
     final _formKey = GlobalKey<FormState>();
     String _enteredTitle = "";
+    File? _selectedImage;
+    PlaceLocation? _pickedLocation;
+
 
     void addPlace() {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
+
+        if (_selectedImage == null) {
+          return;
+        }
+
+        if (_pickedLocation == null) {
+          return;
+        }
+
         setState(() {
-          ref.read(placesProvider.notifier).addPlace(Place(title: _enteredTitle));
+          ref.read(placesProvider.notifier).addPlace(Place(title: _enteredTitle, image: _selectedImage!, location: _pickedLocation!));
         });
       Navigator.of(context).pop();
       }
+
 
     }
   @override
@@ -57,7 +73,15 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
                   return null;
                 },
               ),
-              ImageInput(),
+              ImageInput(onPickImage: (image) {
+                _selectedImage = image;
+              },),
+              SizedBox(
+                height: 10,
+              ),
+              LocationInput(onPickedLocation: (location) {
+                _pickedLocation = location;
+              },),
               SizedBox(
                 height: 16,
               ),

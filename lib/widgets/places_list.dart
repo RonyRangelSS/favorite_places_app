@@ -20,11 +20,20 @@ class PlacesList extends StatelessWidget {
     .builder(
       itemCount: places.length,
       itemBuilder: (ctx, index) {
-        return ListTile(
-            title: Text(places[index].title, style: Theme.of(context).textTheme.titleMedium,),
-            onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlaceDetailsScreen(place: places[index]) ));
-          },);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+              leading: CircleAvatar(
+                backgroundImage: FileImage(places[index].image),
+              ) ,
+              title: Text(places[index].title, style: Theme.of(context).textTheme.titleMedium,),
+              subtitle: Text(places[index].location.addres, style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface
+              ),),
+              onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => PlaceDetailsScreen(place: places[index]) ));
+            },),
+        );
       });
     }
 
