@@ -37,7 +37,7 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
         }
 
         setState(() {
-          ref.read(placesProvider.notifier).addPlace(Place(title: _enteredTitle, image: _selectedImage!, location: _pickedLocation!));
+          ref.read(placesProvider.notifier).addPlace(_enteredTitle, _selectedImage!, _pickedLocation!);
         });
       Navigator.of(context).pop();
       }
